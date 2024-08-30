@@ -1,15 +1,5 @@
 <script setup>
-import { ref } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-
-const posts = ref([]);
-
-fetch("https://66ccd18b8ca9aa6c8cc8cbc0.mockapi.io/post")
-  .then((res) => res.json())
-  .then((data) => {
-    console.log(data);
-    posts.value = data;
-  });
 </script>
 
 <template>

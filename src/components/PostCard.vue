@@ -1,5 +1,39 @@
 <script setup>
+import { ref } from "vue";
 const props = defineProps(["post"]);
+
+const isLiked = ref(false);
+const likes = ref(props.post.likes);
+const id = ref(props.post.id);
+
+function likeBtn() {
+  isLiked.value = !isLiked.value;
+  isLiked.value ? likes.value++ : likes.value--;
+  console.log(likes.value);
+  updateLikes();
+}
+
+function updateLikes() {
+  let options = {
+    method: "PUT",
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+     
+    },
+    body: JSON.stringify({ likes: likes.value }),
+  };
+
+  console.log(options);
+  fetch(`https://66ccd18b8ca9aa6c8cc8cbc0.mockapi.io/post/${id.value}`, options)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      props.post.likes = data.likes;
+      console.log(data);
+    });
+}
 </script>
 
 <template>
@@ -29,11 +63,18 @@ const props = defineProps(["post"]);
     <div class="creator-info">
       <div class="interaction-section">
         <div class="like-comment-share">
-          <img
+          <svg
             class="like-btn icon-btn"
-            src="/src/assets/icons/like.svg"
-            alt="like button"
-          />
+            :class="{ toggled: isLiked }"
+            @click="likeBtn"
+            viewBox="0 0 24 24"
+            width="24px"
+            height="24px"
+          >
+            <path
+              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+            />
+          </svg>
           <img
             class="comment-btn icon-btn"
             src="/src/assets/icons/comment.svg"
@@ -135,6 +176,17 @@ hr {
 hr {
   margin-top: 5px;
   border: 1px solid #f0f0f0;
+}
+
+.like-btn path {
+  fill: none;
+  stroke: black;
+  stroke-width: 2;
+}
+
+.like-btn.toggled path {
+  fill: red;
+  stroke: red;
 }
 
 .likes {

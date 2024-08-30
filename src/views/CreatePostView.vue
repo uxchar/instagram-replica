@@ -110,10 +110,10 @@ form {
 input[type="text"],
 input[type="number"],
 input[type="url"] {
-  height: 30px;
+  height: 40px;
   border-radius: 4px;
   border: none;
-  background-color: rgb(249, 249, 249);
+  background-color: rgb(242, 242, 242);
   padding-left: 10px;
 }
 
